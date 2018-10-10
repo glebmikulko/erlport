@@ -222,8 +222,9 @@ class MessageHandler(object):
     def _incoming_call(self, mid, module, function, args):
         objects = function.split(".")
         f = sys.modules.get(module)
+        print("v3")
         if not f:
-            f = __import__(module, {}, {}, [objects[0]])
+            f = __import__(module, globals(), {}, [objects[0]])
         for o in objects:
             f = getattr(f, o)
         result = Atom("r"), mid, self.encoder(f(*map(self.decoder, args)))
